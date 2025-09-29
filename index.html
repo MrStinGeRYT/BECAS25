@@ -8,50 +8,69 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 10px;
       background-color: #f4f4f4;
     }
     h1 {
       text-align: center;
       color: #333;
+      font-size: 1.5em;
     }
     .pdf-container {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 10px;
       justify-content: center;
     }
     .pdf-item {
       flex: 1;
       min-width: 300px;
-      max-width: 600px;
+      max-width: 100%;
       background-color: white;
-      padding: 15px;
+      padding: 10px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       text-align: center;
     }
     .pdf-item h2 {
-      font-size: 1.2em;
+      font-size: 1.1em;
       margin-bottom: 10px;
       color: #005566;
     }
     .pdf-item embed {
       width: 100%;
-      height: 600px;
+      height: 800px; /* Increased height for larger view */
       border: none;
+      max-height: 90vh; /* Ensures it fits within viewport height on smaller screens */
     }
     .footer {
       text-align: center;
-      margin-top: 20px;
-      font-size: 0.9em;
+      margin-top: 15px;
+      font-size: 0.8em;
       color: #666;
     }
     @media (max-width: 768px) {
-      .pdf-item {
-        min-width: 100%;
+      .pdf-item embed {
+        height: 500px; /* Adjusted for tablets */
+      }
+      h1 {
+        font-size: 1.2em;
+      }
+    }
+    @media (max-width: 480px) {
+      .pdf-item embed {
+        height: 300px; /* Adjusted for phones */
+      }
+      h1 {
+        font-size: 1em;
+      }
+      .pdf-item h2 {
+        font-size: 1em;
+      }
+      body {
+        padding: 5px;
       }
     }
   </style>
@@ -60,12 +79,12 @@
   <h1>Becas Jóvenes Escribiendo el Futuro</h1>
   <div class="pdf-container">
     <div class="pdf-item">
-      <h2>COMUNICADO</h2>
+      <h2>1. Anexo 2. Comunicado de Inicio 2025-2_Estudiantes_S283</h2>
       <embed src="./Anexo 2. Comunicado de Inicio 2025-2_Estudiantes_S283.pdf" id="pdf1">
     </div>
   </div>
   <div class="footer">
-    © 2025 • UNACAR - DIRECCION GENERAL DE SERVICIOS AL ESTUDIANTE
+    © 2025 • UNACAR - DIRECCIÓN GENERAL DE SERVICIOS AL ESTUDIANTE
   </div>
 
   <script>
