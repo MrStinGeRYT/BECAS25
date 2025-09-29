@@ -1,99 +1,216 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
   <title>Visualización de PDFs - Becas Jóvenes Escribiendo el Futuro</title>
   <style>
+    :root{
+      /* --vh se actualiza con JS para manejar la barra de URL móvil */
+      --vh: 1vh;
+      --bg: #f4f4f4;
+      --text: #333;
+      --panel: #fff;
+      --brand: #005566;
+      --muted: #666;
+      --ring: 0 0 0 3px rgba(0,85,102,.15);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 10px;
-      background-color: #f4f4f4;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      padding: 12px;
     }
-    h1 {
+
+    header {
       text-align: center;
-      color: #333;
-      font-size: 1.5em;
+      margin: 0 0 12px;
     }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: var(--text);
+      line-height: 1.2;
+    }
+
     .pdf-container {
       max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .pdf-item {
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .pdf-item h2 {
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      margin: 0 0 2px;
+      color: var(--brand);
+    }
+
+    .pdf-frame {
+      /* Alto dinámico: ocupa hasta el 80% de la altura visible */
+      height: min(calc(var(--vh) * 80), 800px);
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fafafa;
+      box-shadow: 0 0 0 1px rgba(0,0,0,.05) inset;
+    }
+
+    /* <object> para PDF incrustado */
+    .pdf-object {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Fallback visible cuando el navegador no incrusta el PDF */
+    .fallback {
+      display: grid;
+      gap: 8px;
+      place-items: center;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .fallback p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
     }
-    .pdf-item {
-      flex: 1;
-      min-width: 300px;
-      max-width: 100%;
-      background-color: white;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .pdf-item h2 {
-      font-size: 1.1em;
-      margin-bottom: 10px;
-      color: #005566;
-    }
-    .pdf-item embed {
-      width: 100%;
-      height: 800px; /* Increased height for larger view */
+
+    .btn {
+      appearance: none;
       border: none;
-      max-height: 90vh; /* Ensures it fits within viewport height on smaller screens */
+      background: var(--brand);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: .95rem;
+      text-decoration: none;
+      cursor: pointer;
+      outline: none;
     }
-    .footer {
+    .btn:focus { box-shadow: var(--ring); }
+    .btn.secondary {
+      background: #0f172a;
+    }
+
+    footer {
       text-align: center;
-      margin-top: 15px;
-      font-size: 0.8em;
-      color: #666;
+      margin-top: 14px;
+      font-size: .85rem;
+      color: var(--muted);
     }
+
+    /* Ajustes tablet */
     @media (max-width: 768px) {
-      .pdf-item embed {
-        height: 500px; /* Adjusted for tablets */
-      }
-      h1 {
-        font-size: 1.2em;
-      }
+      body { padding: 10px; }
+      .pdf-frame { height: min(calc(var(--vh) * 75), 540px); }
     }
+
+    /* Ajustes teléfono */
     @media (max-width: 480px) {
-      .pdf-item embed {
-        height: 300px; /* Adjusted for phones */
-      }
-      h1 {
-        font-size: 1em;
-      }
-      .pdf-item h2 {
-        font-size: 1em;
-      }
-      body {
-        padding: 5px;
-      }
+      body { padding: 8px; }
+      .pdf-frame { height: min(calc(var(--vh) * 70), 420px); }
+      .pdf-item { padding: 8px; }
     }
   </style>
 </head>
 <body>
-  <h1>Becas Jóvenes Escribiendo el Futuro</h1>
-  <div class="pdf-container">
-    <div class="pdf-item">
-      <h2>1. Anexo 2. Comunicado de Inicio 2025-2_Estudiantes_S283</h2>
-      <embed src="./Anexo 2. Comunicado de Inicio 2025-2_Estudiantes_S283.pdf" id="pdf1">
-    </div>
-  </div>
-  <div class="footer">
+  <header>
+    <h1>Becas Jóvenes Escribiendo el Futuro</h1>
+  </header>
+
+  <main class="pdf-container" aria-label="Documentos PDF">
+    <!-- ====== ITEM 1 ====== -->
+    <section class="pdf-item" aria-labelledby="titulo-pdf-1">
+      <h2 id="titulo-pdf-1">COMUNICADO</h2>
+
+      <div class="pdf-frame">
+        <!--
+          Uso de <object type="application/pdf">:
+          - Si el navegador puede incrustar PDF, lo mostrará.
+          - Si NO puede, el contenido interno (fallback) se mostrará automáticamente.
+        -->
+        <object
+          class="pdf-object"
+          data="./Anexo 2. Comunicado de Inicio 2025-2_Estudiantes_S283.pdf#view=FitH&zoom=page-width"
+          type="application/pdf"
+          aria-label="Vista previa del PDF: Comunicado"
+        >
+          <div class="fallback" role="group" aria-label="Opciones para abrir el PDF">
+            <p>No se pudo mostrar el PDF incrustado en este navegador.</p>
+            <div class="actions">
+              <a class="btn"
+                 href="./Anexo 2. Comunicado de Inicio 2025-2_Estudiantes_S283.pdf"
+                 target="_blank" rel="noopener"
+                 aria-label="Abrir PDF en una nueva pestaña">
+                Abrir PDF
+              </a>
+              <a class="btn secondary"
+                 href="./Anexo 2. Comunicado de Inicio 2025-2_Estudiantes_S283.pdf"
+                 download
+                 aria-label="Descargar PDF">
+                Descargar
+              </a>
+            </div>
+          </div>
+        </object>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
     © 2025 • UNACAR - DIRECCIÓN GENERAL DE SERVICIOS AL ESTUDIANTE
-  </div>
+  </footer>
 
   <script>
-    // Disable right-click on PDFs to discourage saving
-    document.querySelectorAll('embed').forEach(embed => {
-      embed.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-      });
-    });
+    // Ajuste de --vh para móviles (maneja barra de URL en iOS/Android)
+    function setVhUnit() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setVhUnit();
+    window.addEventListener('resize', setVhUnit);
+    window.addEventListener('orientationchange', setVhUnit);
+
+    // Deshabilitar menú contextual (en desktop). En móvil, la mayoría de navegadores lo ignoran.
+    document.addEventListener('contextmenu', (e) => {
+      const withinPDF = e.target.closest('.pdf-frame');
+      if (withinPDF) e.preventDefault();
+    }, { capture: true });
   </script>
 </body>
 </html>
